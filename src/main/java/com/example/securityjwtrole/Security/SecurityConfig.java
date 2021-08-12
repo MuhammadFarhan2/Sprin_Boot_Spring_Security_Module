@@ -13,14 +13,15 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
+    @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
-
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
@@ -31,18 +32,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         System.out.println("SecurituConfig...........http   ");
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeRequests().anyRequest().permitAll();
-        http.addFilter(new CustomAuthenticationFilter(authenticationManager()));
+        http.authorizeRequests().antMatchers("/login","/saveConsumer").permitAll();
+        http.authorizeRequests().antMatchers("/getConsumerById","/getAllConsumer").hasAnyAuthority("consumer");
+        http.authorizeRequests().antMatchers("/**").hasAnyAuthority("admin");
+        http.authorizeRequests().antMatchers("/getAllRole","/getRoleById","/getConsumerById","/getAllConsumer").hasAnyAuthority("manager");
+        http.authorizeRequests().anyRequest().authenticated();
+        http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean()));
+        http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean
     @Override
-    public AuthenticationManager authenticationManager() throws Exception {
+    public AuthenticationManager authenticationManagerBean() throws Exception {
         System.out.println("SecurituConfig...........");
         return super.authenticationManagerBean();
     }
 
     @Bean
     public PasswordEncoder passwordEncoder()
-    { return new BCryptPasswordEncoder();}
+    {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
 }
