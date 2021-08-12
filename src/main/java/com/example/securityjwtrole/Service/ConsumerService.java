@@ -37,7 +37,6 @@ public class ConsumerService implements UserDetailsService {
             throw new UsernameNotFoundException("Not Exist!");
         }
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        System.out.println("Test ConsumerService: "+user.getRole().getRole());
         authorities.add(new SimpleGrantedAuthority(user.getRole().getRole()));
         return new User(user.getUserName(),user.getPassword(),authorities);
     }

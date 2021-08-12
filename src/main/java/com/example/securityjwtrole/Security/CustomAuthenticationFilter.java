@@ -34,18 +34,15 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         this.authenticationManager = authenticationManager;
     }
 
-
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
 //        return super.attemptAuthentication(request, response);
-        System.out.println("First here");
             String username = request.getParameter("username");
             String password = request.getParameter("password");
-        System.out.println("userName: "+username +"\npass: "+password );
-        UsernamePasswordAuthenticationToken authenticationToken =
+            System.out.println("userName: "+username +"\npass: "+password );
+            UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(username,password);
-        System.out.println("1........... "+authenticationToken );
-        return authenticationManager.authenticate(authenticationToken);
+            return authenticationManager.authenticate(authenticationToken);
     }
 
     @Override
@@ -53,7 +50,6 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 //        super.successfulAuthentication(request, response, chain, authResult);
         User user = (User)authentication.getPrincipal();
         Algorithm algorithm = Algorithm.HMAC256("secrete".getBytes());//this is going to be sign the JSON web token
-        System.out.println("sucess");
         String access_Token = JWT.create()
                 .withSubject(user.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis()+ 10*60*1000))
@@ -61,11 +57,9 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                 .withClaim("role",user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
                 .sign(algorithm);
 //Here we can generate refresh token
-        System.out.println("sucess_2");
         Map<String,String> tokens = new HashMap<>();
         tokens.put("access_token: ",access_Token);
         response.setContentType(APPLICATION_JSON_VALUE);
         new ObjectMapper().writeValue(response.getOutputStream(),tokens);
     }
-
 }
