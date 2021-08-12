@@ -29,7 +29,7 @@ public class Controller {
     public List<Consumer> getAllConsumer(){
         return consumerService.getAllConsumer();
     }
-    @GetMapping("/getConsumerById")
+    @GetMapping("/getConsumerById/{id}")
     public Consumer getConsumerById(@PathVariable Integer id){
         return consumerService.getConsumerById(id);
     }
@@ -43,7 +43,7 @@ public class Controller {
     public List<Role> getAllRole(){
         return roleService.getAllRole();
     }
-    @GetMapping("/getRoleById")
+    @GetMapping("/getRoleById/{id}")
     public Role getRoleById(@PathVariable Integer id){
         return roleService.getRoleById(id);
     }

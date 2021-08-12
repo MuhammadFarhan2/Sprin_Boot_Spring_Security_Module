@@ -32,11 +32,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         System.out.println("SecurituConfig...........http   ");
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeRequests().antMatchers("/login","/saveConsumer").permitAll();
-        http.authorizeRequests().antMatchers("/getConsumerById","/getAllConsumer").hasAnyAuthority("consumer");
-        http.authorizeRequests().antMatchers("/**").hasAnyAuthority("admin");
-        http.authorizeRequests().antMatchers("/getAllRole","/getRoleById","/getConsumerById","/getAllConsumer").hasAnyAuthority("manager");
-        http.authorizeRequests().anyRequest().authenticated();
+        http.authorizeRequests().antMatchers("/login").permitAll();
+        http.authorizeRequests().antMatchers("/getConsumerById/{id}","/getAllConsumer").hasAnyAuthority("consumer","admin","manager");
+        http.authorizeRequests().antMatchers("/saveConsumer","/saveRole").hasAnyAuthority("admin");
+        http.authorizeRequests().antMatchers("/getAllRole","/getRoleById/{id}").hasAnyAuthority("manager","admin");
+
         http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean()));
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
@@ -47,13 +47,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         System.out.println("SecurituConfig...........");
         return super.authenticationManagerBean();
     }
-
     @Bean
     public PasswordEncoder passwordEncoder()
     {
         return new BCryptPasswordEncoder();
     }
-
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder(){
         return new BCryptPasswordEncoder();
