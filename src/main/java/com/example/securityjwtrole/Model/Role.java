@@ -23,4 +23,8 @@ public class Role {
     @OneToMany(mappedBy = "role",cascade = CascadeType.ALL)
     private List<Consumer> consumers;
 
+    @JsonManagedReference("ManagerRole")
+    @OneToMany(mappedBy = "role",cascade = CascadeType.ALL)
+    private List<Manager> managers;
+
 }
