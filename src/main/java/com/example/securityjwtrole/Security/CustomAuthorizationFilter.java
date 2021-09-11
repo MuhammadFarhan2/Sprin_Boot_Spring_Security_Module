@@ -32,40 +32,26 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
     @SneakyThrows
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if (request.getServletPath().equals("/loginConsumer")) {
-            System.out.println("What happen in Consumer!");
+        if (request.getServletPath().equals("/loginStudent")) {
             try {
-                    System.out.println("A:"+ request);
                     filterChain.doFilter(request,response);
-                System.out.println("End of do filter: "+ response);
             }
             catch (Exception e){
-                System.out.println(e.getMessage());
             }
-            System.out.println("D");
-
         }
-        else if (request.getServletPath().equals("/loginManager")) {
-            System.out.println("What happen in Manager!");
+        else if (request.getServletPath().equals("/loginTeacher")) {
             try {
-                    System.out.println("A:"+ request);
                     filterChain.doFilter(request,response);
-                System.out.println("End of do filter: "+ response);
             }
             catch (Exception e){
                 System.out.println(e.getMessage());
             }
-            System.out.println("D");
-
         }
         else
         {
-            System.out.println("E");
             String authorizationHeader = request.getHeader(AUTHORIZATION);
             if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
                 try {
-                    System.out.println("F");
-
                     String token = authorizationHeader.substring("Bearer ".length());
                     Algorithm algorithm = Algorithm.HMAC256("secrete".getBytes());
                     JWTVerifier verifier = JWT.require(algorithm).build();
@@ -89,8 +75,6 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     new ObjectMapper().writeValue(response.getOutputStream(),error);
                 }
             }else {
-                System.out.println("G");
-
                 filterChain.doFilter(request,response);
             }
         }

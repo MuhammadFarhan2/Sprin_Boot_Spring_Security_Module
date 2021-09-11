@@ -1,12 +1,8 @@
 package com.example.securityjwtrole.Service;
 
-import com.example.securityjwtrole.Model.Consumer;
-import com.example.securityjwtrole.Model.Role;
-import com.example.securityjwtrole.Repository.ConsumerRepository;
+import com.example.securityjwtrole.Model.Student;
+import com.example.securityjwtrole.Repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Primary;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,27 +14,27 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-@Qualifier("consumer")
 //@Primary
+
 @Service
-public class ConsumerService implements UserDetailsService {
+public class StudentService implements UserDetailsService {
     @Autowired
-    private ConsumerRepository  consumerRepository;
-    public Consumer saveConsumer(Consumer consumer)
+    private StudentRepository studentRepository;
+    public Student saveStudent(Student student)
     {
-        return consumerRepository.save(consumer);
+        return studentRepository.save(student);
     }
-    public List<Consumer> getAllConsumer(){
-        return  consumerRepository.findAll();
+    public List<Student> getAllStudent(){
+        return  studentRepository.findAll();
     }
-    public Consumer getConsumerById(Integer id){
-        return consumerRepository.getById(id);
+    public Student getStudentById(Integer id){
+        return studentRepository.getById(id);
     }
 
     @Override
-    public UserDetails loadUserByUsername(@Qualifier("consumer") String userName) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         System.out.println("Load: "+userName);
-        Consumer user = consumerRepository.findByUserName(userName);
+        Student user = studentRepository.findByUserName(userName);
         if (user == null) {
             throw new UsernameNotFoundException("Not Exist!");
         }

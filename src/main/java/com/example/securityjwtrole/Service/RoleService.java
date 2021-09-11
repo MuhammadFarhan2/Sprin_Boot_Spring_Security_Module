@@ -1,8 +1,6 @@
 package com.example.securityjwtrole.Service;
 
-import com.example.securityjwtrole.Model.Consumer;
 import com.example.securityjwtrole.Model.Role;
-import com.example.securityjwtrole.Repository.ConsumerRepository;
 import com.example.securityjwtrole.Repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

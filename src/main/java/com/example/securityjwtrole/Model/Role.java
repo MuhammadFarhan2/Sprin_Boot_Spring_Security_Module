@@ -21,10 +21,10 @@ public class Role {
 
     @JsonManagedReference("ConsumerRole")
     @OneToMany(mappedBy = "role",cascade = CascadeType.ALL)
-    private List<Consumer> consumers;
+    private List<Student> students;
 
     @JsonManagedReference("ManagerRole")
     @OneToMany(mappedBy = "role",cascade = CascadeType.ALL)
-    private List<Manager> managers;
+    private List<Teacher> teachers;
 
 }

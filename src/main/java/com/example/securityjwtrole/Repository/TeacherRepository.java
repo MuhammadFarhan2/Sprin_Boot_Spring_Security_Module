@@ -1,11 +1,11 @@
 package com.example.securityjwtrole.Repository;
 
-import com.example.securityjwtrole.Model.Manager;
+import com.example.securityjwtrole.Model.Teacher;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface  ManagerRepository extends JpaRepository<Manager,Integer> {
-    Manager findByUserName(String userName);
+public interface TeacherRepository extends JpaRepository<Teacher,Integer> {
+    Teacher findByUserName(String userName);
 
 }

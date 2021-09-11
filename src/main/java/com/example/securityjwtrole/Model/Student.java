@@ -16,8 +16,8 @@ import javax.persistence.*;
 @Data
 @ToString
 @Entity
-@Table(name = "consumer")
-public class Consumer {
+@Table(name = "student")
+public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
